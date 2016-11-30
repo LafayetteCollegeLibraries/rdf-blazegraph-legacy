@@ -185,10 +185,10 @@ module RDF::Blazegraph
     end
     
     def send_post_request(request_url, statements)
-      writer = RDF::Writer.for(:nquads)
+      writer = RDF::Writer.for(:ttl)
       
       request = Net::HTTP::Post.new(request_url)
-      request['Content-Type'] = 'text/x-nquads'
+      request['Content-Type'] = 'application/x-turtle-RDR'
       request.body = writer.dump(statements)
       
       @http.request(url, request)
@@ -205,7 +205,7 @@ module RDF::Blazegraph
     # @param [Net::HTTPResponse] response
     # @return [RDF::Enumerable]
     def read_rdf_response(response)
-      RDF::Reader.for(content_type: 'application/n-quads').new(response.body)
+      RDF::Reader.for(content_type: 'application/x-turtle-RDR').new(response.body)
     end
 
     ## 
